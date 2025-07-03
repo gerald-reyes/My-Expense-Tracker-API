@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.API.GraphQL.Queries;
 
+[ExtendObjectType(Name = "Query")]
 public class ExpenseSubCategoryQuery
 {
     public async Task<IEnumerable<ExpenseSubCategory>> GetExpenseSubCategories([Service] AppDbContext context)

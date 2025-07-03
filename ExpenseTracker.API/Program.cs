@@ -15,11 +15,15 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddGraphQLServer()
-    .AddQueryType<ExpenseCategoryQuery>()
-    .AddTypeExtension<ExpenseSubCategoryQuery>()
-    .AddMutationType<ExpenseCategoryMutation>()
-    .AddTypeExtension<ExpenseSubCategoryMutation>();
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType(d => d.Name("Query"))
+        .AddTypeExtension<ExpenseCategoryQuery>()
+        .AddTypeExtension<ExpenseSubCategoryQuery>()
+    .AddMutationType(d => d.Name("Mutation"))
+        .AddTypeExtension<ExpenseCategoryMutation>()
+        .AddTypeExtension<ExpenseSubCategoryMutation>();
+
 
 var app = builder.Build();
 

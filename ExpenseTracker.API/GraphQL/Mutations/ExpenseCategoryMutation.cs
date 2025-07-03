@@ -3,6 +3,7 @@ using ExpenseTracker.Infrastructure.Data.Models;
 
 namespace ExpenseTracker.API.GraphQL.Mutations;
 
+[ExtendObjectType(Name = "Mutation")]
 public class ExpenseCategoryMutation
 {
     public async Task<ExpenseCategory> CreateExpenseCategory(ExpenseCategory input, [Service] AppDbContext context)
