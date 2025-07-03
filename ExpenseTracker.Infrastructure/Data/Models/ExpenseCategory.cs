@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HotChocolate;
 
 namespace ExpenseTracker.Infrastructure.Data.Models;
 
@@ -17,5 +18,6 @@ public partial class ExpenseCategory
 
     public bool IsActive { get; set; }
 
+    [GraphQLIgnore]
     public virtual ICollection<ExpenseSubCategory> ExpenseSubCategories { get; set; } = new List<ExpenseSubCategory>();
 }
