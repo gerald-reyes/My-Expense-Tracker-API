@@ -15,6 +15,18 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .SetIsOriginAllowedToAllowWildcardSubdomains()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services
     .AddGraphQLServer()
     .AddQueryType(d => d.Name("Query"))
@@ -26,6 +38,8 @@ builder.Services
 
 
 var app = builder.Build();
+
+app.UseCors();
 
 app.MapGraphQL();
 
