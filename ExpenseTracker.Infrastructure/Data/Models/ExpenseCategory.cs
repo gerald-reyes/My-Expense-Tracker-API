@@ -17,7 +17,9 @@ public partial class ExpenseCategory
     public DateTime UpdatedAt { get; set; }
 
     public bool IsActive { get; set; }
+    public int? ParentId { get; set; }
 
-    [GraphQLIgnore]
-    public virtual ICollection<ExpenseSubCategory> ExpenseSubCategories { get; set; } = new List<ExpenseSubCategory>();
+    public ExpenseCategory? Parent { get; set; }
+
+    public ICollection<ExpenseCategory> Children { get; set; } = new List<ExpenseCategory>();
 }

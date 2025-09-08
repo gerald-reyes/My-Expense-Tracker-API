@@ -1,48 +1,59 @@
 using ExpenseTracker.Infrastructure.Data;
 using ExpenseTracker.Infrastructure.Data.Models;
+using HotChocolate; // for GraphQL attributes
+using HotChocolate.Types; // for ExtendObjectType
 
 namespace ExpenseTracker.API.GraphQL.Mutations;
 
-[ExtendObjectType(Name = "Mutation")]
+[ExtendObjectType("Mutation")]
 public class ExpenseCategoryMutation
 {
-    public async Task<ExpenseCategory> CreateExpenseCategory(CreateExpenseCategoryInput input, [Service] AppDbContext context)
+    public async Task<ExpenseCategory> CreateExpenseCategory(
+        CreateExpenseCategoryInput input,
+        [Service] AppDbContext context)
     {
-        Console.WriteLine($"Debug: Creating ExpenseCategory with input: Name={input.name}, Description={input.description}");
+        Console.WriteLine(
+            $"Debug: Creating ExpenseCategory with input: Name={input.Name}, Description={input.Description}");
+
         var expenseCategory = new ExpenseCategory
         {
-            Name = input.name,
-            Description = input.description,
-            IsActive = input.isActive ?? false
+            Name = input.Name,
+            Description = input.Description,
+            IsActive = input.IsActive ?? false
         };
+
         context.ExpenseCategories.Add(expenseCategory);
         await context.SaveChangesAsync();
         return expenseCategory;
     }
 
+    [GraphQLName("CreateExpenseCategoryInput")]
     public class CreateExpenseCategoryInput
     {
-        public string name { get; set; }
-        public string? description { get; set; }
-        public bool? isActive { get; set; }
+        public string Name { get; set; } = null!;
+        public string? Description { get; set; }
+        public bool? IsActive { get; set; }
     }
 
+    [GraphQLName("UpdateExpenseCategoryInput")]
     public class UpdateExpenseCategoryInput
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public bool isActive { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; } = null!;
+        public string? Description { get; set; }
+        public bool IsActive { get; set; }
     }
 
-    public async Task<ExpenseCategory> UpdateExpenseCategory(UpdateExpenseCategoryInput input, [Service] AppDbContext context)
+    public async Task<ExpenseCategory> UpdateExpenseCategory(
+        UpdateExpenseCategoryInput input,
+        [Service] AppDbContext context)
     {
-        var expenseCategory = await context.ExpenseCategories.FindAsync(input.id);
+        var expenseCategory = await context.ExpenseCategories.FindAsync(input.Id);
         if (expenseCategory == null) throw new Exception("ExpenseCategory not found");
 
-        expenseCategory.Name = input.name;
-        expenseCategory.Description = input.description;
-        expenseCategory.IsActive = input.isActive;
+        expenseCategory.Name = input.Name;
+        expenseCategory.Description = input.Description;
+        expenseCategory.IsActive = input.IsActive;
 
         await context.SaveChangesAsync();
         return expenseCategory;
@@ -57,7 +68,4 @@ public class ExpenseCategoryMutation
         await context.SaveChangesAsync();
         return true;
     }
-
-
-
 }
