@@ -31,11 +31,8 @@ builder.Services
     .AddGraphQLServer()
     .AddQueryType(d => d.Name("Query"))
         .AddTypeExtension<ExpenseCategoryQuery>()
-        .AddTypeExtension<ExpenseSubCategoryQuery>()
     .AddMutationType(d => d.Name("Mutation"))
-        .AddTypeExtension<ExpenseCategoryMutation>()
-        .AddTypeExtension<ExpenseSubCategoryMutation>();
-
+        .AddTypeExtension<ExpenseCategoryMutation>();
 
 var app = builder.Build();
 
